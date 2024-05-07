@@ -1,75 +1,13 @@
-# Nuxt 3 Minimal Starter
+## 開発メモ
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+素材
 
-## Setup
+- かわいいドット絵フリー素材サイト：https://dot-illust.net/tag/rpg/
 
-Make sure to install the dependencies:
+ディレクトリ構造
 
-```bash
-# npm
-npm install
+- Nuxt 公式ドキュメント：https://nuxt.com/docs/guide/directory-structure
 
-# pnpm
-pnpm install
+コンポーネント設計
 
-# yarn
-yarn install
-
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+- 【React/Vue.js】コンポーネント設計の（個人的）ベストプラクティス | Offers Tech Blog：https://zenn.dev/overflow_offers/articles/20220523-component-design-best-practice
