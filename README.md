@@ -7,6 +7,7 @@
 ディレクトリ構造
 
 - Nuxt 公式ドキュメント：https://nuxt.com/docs/guide/directory-structure
+- Nuxt3 のディレクトリ構成 一覧：https://zenn.dev/r0227n/articles/nuxt3_directory_structure_memo
 
 コンポーネント設計
 
