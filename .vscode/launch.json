@@ -1,0 +1,27 @@
+{
+	"version": "0.2.0",
+	"compounds": [
+		{
+			"name": "fullstack: nuxt",
+			"configurations": ["server: nuxt", "client: chrome"]
+		}
+	],
+	"configurations": [
+		{
+			"name": "client: chrome",
+			"request": "launch",
+			"type": "chrome",
+			"url": "http://localhost:3000",
+			"webRoot": "${workspaceFolder}"
+		},
+		{
+			"name": "server: nuxt",
+			"type": "node",
+			"request": "launch",
+			"cwd": "${workspaceFolder}",
+			"runtimeExecutable": "npm",
+			"runtimeArgs": ["run", "dev"],
+			"console": "integratedTerminal"
+		}
+	]
+}
