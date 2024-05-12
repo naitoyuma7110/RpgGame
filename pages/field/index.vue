@@ -18,8 +18,39 @@ const handlePlayerMove = (delta: Delta) => {
   player.move(delta)
   field.updateRenderField()
   renderField.value = field.getRenderField()
-  console.log(renderField.value)
 }
+
+const handleKeyPress = (event: KeyboardEvent) => {
+  switch (event.key) {
+    case "ArrowUp":
+      handlePlayerMove({
+        x: 0,
+        y: -1
+      });
+      break;
+    case "ArrowDown":
+      handlePlayerMove({
+        x: 0,
+        y: 1
+      });
+      break;
+    case "ArrowLeft":
+      handlePlayerMove({
+        x: -1,
+        y: 0
+      });
+      break;
+    case "ArrowRight":
+      handlePlayerMove({
+        x: 1,
+        y: 0
+      });
+      break;
+  }
+}
+onMounted(() => {
+  document.addEventListener("keydown", handleKeyPress);
+})
 
 </script>
 
