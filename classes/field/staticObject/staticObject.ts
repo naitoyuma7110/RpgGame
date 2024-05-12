@@ -9,6 +9,5 @@ export class BlankTile implements StaticObject {
 	constructor(position: Position) {
 		this.fieldPosition = position;
 		this.fieldViewImagePath = blankTile;
-		// "./public/images/field/staticObject/maptile_renga_white_01.svg";
 	}
 }
