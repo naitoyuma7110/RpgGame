@@ -15,55 +15,60 @@ export interface StaticObject extends FieldObject {
 	fieldPosition: Position;
 }
 
-const row = 20;
-const col = 20;
+const fieldRow = 20;
+const filedCol = 20;
 
 export class Field {
 	private fieldCharacters: FieldCharacter[];
 	private staticObjects: StaticObject[];
 
-	private staticField: FieldObject[][];
+	private staticField: StaticObject[][];
+
+	private renderField: FieldObject[][];
 
 	constructor() {
 		this.fieldCharacters = [];
 		this.staticObjects = [];
+		this.staticField = [];
+		this.renderField = [];
 
-		// const player = new FieldPlayer();
-		// this.fieldCharacters.push(player);
+		for (let i = 0; i < fieldRow; i++) {
+			this.staticField.push(new Array(filedCol));
+			this.renderField.push(new Array(filedCol));
 
-		for (let i = 0; i < row; i++) {
-			for (let j = 0; j < col; j++) {
+			for (let j = 0; j < filedCol; j++) {
 				const position = {
 					x: j,
 					y: i,
 				};
-				this.staticObjects.push(new BlankTile(position));
+				const blankTile = new BlankTile(position);
+				this.staticObjects.push(blankTile);
+
+				this.renderField[position.y][position.x] = blankTile;
+				this.staticField[position.y][position.x] = blankTile;
 			}
 		}
-
-		this.staticField = [];
-		for (let i = 0; i < row; i++) {
-			this.staticField.push(new Array(col));
-		}
-
-		this.staticObjects.forEach((staticObject) => {
-			const position = staticObject.fieldPosition;
-			this.staticField[position.y][position.x] = staticObject;
-		});
 	}
 
 	addFieldCharacter(fieldCharacter: FieldCharacter) {
-		this.fieldCharacters.push(fieldCharacter);
+		this.fieldCharacters = [...this.fieldCharacters, fieldCharacter];
+		this.updateRenderField();
 	}
 
-	getRenderField(): FieldObject[][] {
-		const renderField: FieldObject[][] = [...this.staticField];
+	updateRenderField() {
+		const newRenderField: FieldObject[][] = this.staticField.map((row) => [
+			...row,
+		]);
 
 		this.fieldCharacters.forEach((fieldCharacter) => {
 			const position = fieldCharacter.fieldPosition;
-			renderField[position.y][position.x] = fieldCharacter;
+			newRenderField[position.y][position.x] = fieldCharacter;
 		});
+		this.renderField = newRenderField;
+	}
 
-		return renderField;
+	getRenderField() {
+		const newRenderField = this.renderField.map((row) => [...row]);
+		return newRenderField;
 	}
 }
