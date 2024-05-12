@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { type FieldObject } from '@/classes/field/field';
-const fieldObject: FieldObject = useAttrs().fieldObject as FieldObject
+const props = defineProps(['fieldObject'])
+const { fieldObject } = toRefs(props)
 </script>
 
 <template>
