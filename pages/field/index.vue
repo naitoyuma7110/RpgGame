@@ -2,6 +2,7 @@
 import { Field } from '@/classes/field/field';
 import { FieldPlayer } from '@/classes/field/character/fieldCharacter';
 import type { Delta } from '~/types/util';
+import { FieldEnemySlow, FieldEnemyFast } from '../../classes/field/character/fieldCharacter';
 
 const field = reactive<Field>(new Field())
 
@@ -9,13 +10,28 @@ const playerPosition = {
   x: 0,
   y: 0
 }
+const enemyPosition = {
+  x: 19,
+  y: 19
+}
+const enemyPosition2 = {
+  x: 0,
+  y: 19
+}
+
 const player = reactive(new FieldPlayer(playerPosition))
+const enemy = reactive(new FieldEnemySlow(enemyPosition))
+const enemy2 = reactive(new FieldEnemyFast(enemyPosition2))
 field.addFieldCharacter(player)
+field.addFieldCharacter(enemy)
+field.addFieldCharacter(enemy2)
 
 const renderField = ref(field.getRenderField())
 
 const handlePlayerMove = (delta: Delta) => {
   player.move(delta)
+  enemy.move(player.fieldPosition)
+  enemy2.move(player.fieldPosition)
   field.updateRenderField()
   renderField.value = field.getRenderField()
 }

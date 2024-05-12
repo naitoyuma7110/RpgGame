@@ -1,5 +1,4 @@
 import type { Delta, Position } from "@/types/util";
-import { FieldPlayer } from "./character/fieldCharacter";
 import { BlankTile } from "./staticObject/staticObject";
 
 export interface FieldObject {
@@ -8,7 +7,7 @@ export interface FieldObject {
 
 export interface FieldCharacter extends FieldObject {
 	fieldPosition: Position;
-	move(delta?: Delta): void;
+	move(delta?: Delta, position?: Position): void;
 }
 
 export interface StaticObject extends FieldObject {
