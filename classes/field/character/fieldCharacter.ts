@@ -33,7 +33,7 @@ export class FieldEnemySlow implements FieldCharacter {
 		if (random > 0.5) {
 			return;
 		}
-		// TODO:Playerの位置に自動で向かってくる動き
+
 		const currentPosition = {
 			x: this.fieldPosition.x,
 			y: this.fieldPosition.y,
