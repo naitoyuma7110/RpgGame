@@ -4,7 +4,7 @@ const { fieldObject } = toRefs(props)
 </script>
 
 <template>
-  <img :src="fieldObject.fieldViewImagePath" />
+  <img v-if="fieldObject" :src="fieldObject.fieldViewImagePath" />
 </template>
 <style>
 img {
