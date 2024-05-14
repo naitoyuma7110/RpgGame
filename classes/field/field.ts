@@ -1,17 +1,22 @@
 import type { Delta, Position } from "@/types/util";
-import { BlankTile } from "./staticObject/staticObject";
+import {
+	BlankTile,
+	Tree,
+	WarpTile,
+} from "@/classes/field/staticObject/staticObject";
 
 export interface FieldObject {
 	fieldViewImagePath: string;
+	fieldPosition: Position;
 }
 
 export interface FieldCharacter extends FieldObject {
-	fieldPosition: Position;
 	move(delta?: Delta, position?: Position): void;
 }
 
 export interface StaticObject extends FieldObject {
-	fieldPosition: Position;
+	isPassable: boolean;
+	collisionEvent(fieldCharacter: FieldCharacter): void;
 }
 
 const fieldRow = 20;
@@ -21,32 +26,58 @@ export class Field {
 	private fieldCharacters: FieldCharacter[];
 	private staticObjects: StaticObject[];
 
-	private staticField: StaticObject[][];
+	staticField: StaticObject[][];
 
-	private renderField: FieldObject[][];
+	activeField: FieldCharacter[][];
 
 	constructor() {
 		this.fieldCharacters = [];
 		this.staticObjects = [];
 		this.staticField = [];
-		this.renderField = [];
+		this.activeField = [];
 
-		for (let i = 0; i < fieldRow; i++) {
+		for (let i = 0; i <= fieldRow; i++) {
 			this.staticField.push(new Array(filedCol));
-			this.renderField.push(new Array(filedCol));
+			this.activeField.push(new Array(filedCol).fill(null));
 
-			for (let j = 0; j < filedCol; j++) {
+			for (let j = 0; j <= filedCol; j++) {
 				const position = {
 					x: j,
 					y: i,
 				};
-				const blankTile = new BlankTile(position);
-				this.staticObjects.push(blankTile);
+				let object;
+				if (i == 0 || i == filedCol || j == 0 || j == fieldRow) {
+					object = new Tree(position);
+				} else if (i % 4 == 1 && j % 5 == 1) {
+					object = new WarpTile(position);
+				} else {
+					object = new BlankTile(position);
+				}
 
-				this.renderField[position.y][position.x] = blankTile;
-				this.staticField[position.y][position.x] = blankTile;
+				this.staticObjects.push(object);
+				this.staticField[position.y][position.x] = object;
 			}
 		}
+	}
+
+	private getObjectOnPosition(targetPosition: Position): {
+		fieldCharacter: FieldCharacter | undefined;
+		staticObject: StaticObject | undefined;
+	} {
+		const staticObject = this.staticObjects.find(
+			(staticObject) => (staticObject.fieldPosition = targetPosition)
+		);
+
+		const fieldCharacter = this.fieldCharacters.find(
+			(fieldCharacter) => (fieldCharacter.fieldPosition = targetPosition)
+		);
+
+		const result = {
+			fieldCharacter: fieldCharacter,
+			staticObject: staticObject,
+		};
+
+		return result;
 	}
 
 	addFieldCharacter(fieldCharacter: FieldCharacter) {
@@ -55,19 +86,23 @@ export class Field {
 	}
 
 	updateRenderField() {
-		const newRenderField: FieldObject[][] = this.staticField.map((row) => [
-			...row,
-		]);
+		const newActiveField: FieldCharacter[][] = [];
+		for (let i = 0; i <= fieldRow; i++) {
+			newActiveField.push(new Array(filedCol));
+		}
 
 		this.fieldCharacters.forEach((fieldCharacter) => {
 			const position = fieldCharacter.fieldPosition;
-			newRenderField[position.y][position.x] = fieldCharacter;
+			newActiveField[position.y][position.x] = fieldCharacter;
 		});
-		this.renderField = newRenderField;
+		this.activeField = newActiveField;
 	}
 
-	getRenderField() {
-		const newRenderField = this.renderField.map((row) => [...row]);
-		return newRenderField;
+	collisionEventOccur() {
+		this.fieldCharacters.forEach((character) => {
+			const position = character.fieldPosition;
+			const staticObject = this.staticField[position.y][position.x];
+			staticObject.collisionEvent(character);
+		});
 	}
 }

@@ -1,21 +1,21 @@
 <script setup lang="ts">
 import { Field } from '@/classes/field/field';
 import { FieldPlayer } from '@/classes/field/character/fieldCharacter';
-import type { Delta } from '~/types/util';
-import { FieldEnemySlow, FieldEnemyFast } from '../../classes/field/character/fieldCharacter';
+import type { Delta } from '@/types/util';
+import { FieldEnemySlow, FieldEnemyFast } from '@/classes/field/character/fieldCharacter';
 
 const field = reactive<Field>(new Field())
 
 const playerPosition = {
-  x: 0,
-  y: 0
+  x: 1,
+  y: 1
 }
 const enemyPosition = {
   x: 19,
   y: 19
 }
 const enemyPosition2 = {
-  x: 0,
+  x: 1,
   y: 19
 }
 
@@ -26,14 +26,13 @@ field.addFieldCharacter(player)
 field.addFieldCharacter(enemy)
 field.addFieldCharacter(enemy2)
 
-const renderField = ref(field.getRenderField())
 
 const handlePlayerMove = (delta: Delta) => {
   player.move(delta)
   enemy.move(player.fieldPosition)
   enemy2.move(player.fieldPosition)
+  field.collisionEventOccur()
   field.updateRenderField()
-  renderField.value = field.getRenderField()
 }
 
 const handleKeyPress = (event: KeyboardEvent) => {
@@ -71,15 +70,24 @@ onMounted(() => {
 </script>
 
 <template>
+
   <div class="d-flex pa-10">
-    <div class="field">
-      <div class="field-row" v-for="(row, y)  in renderField" :key="y">
-        <span class="field-col" v-for="(fieldObject, x) in row" :key="`${y}-${x}`">
-          <FieldBlock :fieldObject="fieldObject" />
-          <!-- <img :src="fieldObject.fieldViewImagePath" /> -->
-        </span>
+    <dir class="me-10">
+      <div class="field player-field">
+        <div class="field-row" v-for="(row, y)  in field.staticField" :key="y">
+          <span class="field-col" v-for="(fieldObject, x) in row" :key="`${y}-${x}`">
+            <FieldBlock :fieldObject="fieldObject" />
+          </span>
+        </div>
       </div>
-    </div>
+      <div class="field">
+        <div class="field-row" v-for="(row, y)  in field.activeField" :key="y">
+          <span class="field-col" v-for="(fieldObject, x) in row" :key="`${y}-${x}`">
+            <FieldBlock :fieldObject="fieldObject" />
+          </span>
+        </div>
+      </div>
+    </dir>
     <div class="w-25 ms-5 d-flex flex-column">
       <div class="mt-auto py-5">
         <div class="d-flex">
@@ -142,6 +150,7 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .field {
+  position: relative;
 
   &-row {
     display: flex;
@@ -153,5 +162,9 @@ onMounted(() => {
     height: 30px;
     border: 1px solid #CCC;
   }
+}
+
+.player-field {
+  position: absolute;
 }
 </style>
