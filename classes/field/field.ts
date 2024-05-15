@@ -27,7 +27,6 @@ export class Field {
 	private staticObjects: StaticObject[];
 
 	staticField: StaticObject[][];
-
 	activeField: FieldCharacter[][];
 
 	constructor() {
@@ -82,10 +81,10 @@ export class Field {
 
 	addFieldCharacter(fieldCharacter: FieldCharacter) {
 		this.fieldCharacters = [...this.fieldCharacters, fieldCharacter];
-		this.updateRenderField();
+		this.updateActiveField();
 	}
 
-	updateRenderField() {
+	updateActiveField() {
 		const newActiveField: FieldCharacter[][] = [];
 		for (let i = 0; i <= fieldRow; i++) {
 			newActiveField.push(new Array(filedCol));

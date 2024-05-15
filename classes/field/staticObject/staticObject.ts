@@ -7,7 +7,6 @@ import tree from "@/assets/images/field/staticObject/ki_02_01.svg";
 export class BlankTile implements StaticObject {
 	fieldPosition: Position;
 	fieldViewImagePath: string;
-
 	isPassable: boolean;
 
 	collisionEvent(fieldCharacter: FieldCharacter) {}

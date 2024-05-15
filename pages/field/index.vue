@@ -32,7 +32,7 @@ const handlePlayerMove = (delta: Delta) => {
   enemy.move(player.fieldPosition)
   enemy2.move(player.fieldPosition)
   field.collisionEventOccur()
-  field.updateRenderField()
+  field.updateActiveField()
 }
 
 const handleKeyPress = (event: KeyboardEvent) => {
