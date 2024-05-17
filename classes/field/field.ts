@@ -47,7 +47,7 @@ export class Field {
 				let object;
 				if (i == 0 || i == filedCol || j == 0 || j == fieldRow) {
 					object = new Tree(position);
-				} else if (i % 4 == 1 && j % 5 == 1) {
+				} else if (i == 10 && j == 10) {
 					object = new WarpTile(position);
 				} else {
 					object = new BlankTile(position);
@@ -59,28 +59,8 @@ export class Field {
 		}
 	}
 
-	private getObjectOnPosition(targetPosition: Position): {
-		fieldCharacter: FieldCharacter | undefined;
-		staticObject: StaticObject | undefined;
-	} {
-		const staticObject = this.staticObjects.find(
-			(staticObject) => (staticObject.fieldPosition = targetPosition)
-		);
-
-		const fieldCharacter = this.fieldCharacters.find(
-			(fieldCharacter) => (fieldCharacter.fieldPosition = targetPosition)
-		);
-
-		const result = {
-			fieldCharacter: fieldCharacter,
-			staticObject: staticObject,
-		};
-
-		return result;
-	}
-
-	addFieldCharacter(fieldCharacter: FieldCharacter) {
-		this.fieldCharacters = [...this.fieldCharacters, fieldCharacter];
+	private addFieldCharacter(FieldCharacter: FieldCharacter) {
+		this.fieldCharacters.push(FieldCharacter);
 		this.updateActiveField();
 	}
 
@@ -95,6 +75,23 @@ export class Field {
 			newActiveField[position.y][position.x] = fieldCharacter;
 		});
 		this.activeField = newActiveField;
+	}
+
+	createFieldCharacter<T extends FieldCharacter>(
+		CharacterClass: new (
+			position: Position,
+			fieldCharacters: FieldCharacter[],
+			staticObjects: StaticObject[]
+		) => T,
+		position: Position
+	): T {
+		const character = new CharacterClass(
+			position,
+			this.fieldCharacters,
+			this.staticObjects
+		);
+		this.addFieldCharacter(character);
+		return character;
 	}
 
 	collisionEventOccur() {

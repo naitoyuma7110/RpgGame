@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { Field } from '@/classes/field/field';
-import { FieldPlayer } from '@/classes/field/character/fieldCharacter';
+import { SwordMan, Thief } from '@/classes/field/character/fieldCharacter';
 import type { Delta } from '@/types/util';
-import { FieldEnemySlow, FieldEnemyFast } from '@/classes/field/character/fieldCharacter';
 
 const field = reactive<Field>(new Field())
 
@@ -14,23 +13,14 @@ const enemyPosition = {
   x: 19,
   y: 19
 }
-const enemyPosition2 = {
-  x: 1,
-  y: 19
-}
 
-const player = reactive(new FieldPlayer(playerPosition))
-const enemy = reactive(new FieldEnemySlow(enemyPosition))
-const enemy2 = reactive(new FieldEnemyFast(enemyPosition2))
-field.addFieldCharacter(player)
-field.addFieldCharacter(enemy)
-field.addFieldCharacter(enemy2)
+const player = reactive(field.createFieldCharacter(SwordMan, playerPosition))
+const enemy = field.createFieldCharacter(Thief, enemyPosition)
 
 
 const handlePlayerMove = (delta: Delta) => {
   player.move(delta)
   enemy.move(player.fieldPosition)
-  enemy2.move(player.fieldPosition)
   field.collisionEventOccur()
   field.updateActiveField()
 }
@@ -72,7 +62,7 @@ onMounted(() => {
 <template>
 
   <div class="d-flex pa-10">
-    <dir class="me-10">
+    <div class="me-10">
       <div class="field player-field">
         <div class="field-row" v-for="(row, y)  in field.staticField" :key="y">
           <span class="field-col" v-for="(fieldObject, x) in row" :key="`${y}-${x}`">
@@ -87,7 +77,7 @@ onMounted(() => {
           </span>
         </div>
       </div>
-    </dir>
+    </div>
     <div class="w-25 ms-5 d-flex flex-column">
       <div class="mt-auto py-5">
         <div class="d-flex">
