@@ -1,8 +1,8 @@
 import type { Delta, Position } from "@/types/util";
 import {
-	BlankTile,
 	Tree,
 	WarpTile,
+	BlankTile,
 } from "@/classes/field/staticObject/staticObject";
 
 export interface FieldObject {
@@ -16,7 +16,7 @@ export interface FieldCharacter extends FieldObject {
 
 export interface StaticObject extends FieldObject {
 	isPassable: boolean;
-	collisionEvent(fieldCharacter: FieldCharacter): void;
+	overlapEvent(fieldCharacter: FieldCharacter): void;
 }
 
 const fieldRow = 20;
@@ -92,13 +92,5 @@ export class Field {
 		);
 		this.addFieldCharacter(character);
 		return character;
-	}
-
-	collisionEventOccur() {
-		this.fieldCharacters.forEach((character) => {
-			const position = character.fieldPosition;
-			const staticObject = this.staticField[position.y][position.x];
-			staticObject.collisionEvent(character);
-		});
 	}
 }

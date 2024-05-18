@@ -21,7 +21,6 @@ const enemy = field.createFieldCharacter(Thief, enemyPosition)
 const handlePlayerMove = (delta: Delta) => {
   player.move(delta)
   enemy.move(player.fieldPosition)
-  field.collisionEventOccur()
   field.updateActiveField()
 }
 

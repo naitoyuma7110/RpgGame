@@ -28,8 +28,6 @@ export abstract class AbsFieldCharacter implements FieldCharacter {
 			y: this.fieldPosition.y + move.y,
 		};
 
-		// TODO:findメソッドによる一致条件をpositin.x,yまで指定しなければ期待した挙動にならなかった
-		// find条件でobjectの一致による判定は参照一致
 		const staticObject = this.staticObjects.find(
 			(staticObject) =>
 				staticObject.fieldPosition.x == targetPosition.x &&
@@ -69,10 +67,17 @@ export class SwordMan extends AbsFieldCharacter {
 	move(delta: Delta) {
 		const collisionObject = this.getCollisionObject(delta);
 		if (collisionObject.fieldCharacter) {
+			// TODO:キャラクター同士の接触イベント
+			// キャラクター同士は重ならないため移動は行われない
 			return;
-		} else {
+		} else if (
+			collisionObject.staticObject &&
+			collisionObject.staticObject.isPassable
+		) {
 			this.fieldPosition.x += delta.x;
 			this.fieldPosition.y += delta.y;
+
+			collisionObject.staticObject.overlapEvent(this);
 		}
 	}
 }
@@ -112,8 +117,6 @@ export class Thief extends AbsFieldCharacter {
 			move.x = targetPosition.x - currentPosition.x > 0 ? 1 : -1;
 		} else if (distance.x < distance.y) {
 			move.y = targetPosition.y - currentPosition.y > 0 ? 1 : -1;
-		} else {
-			return;
 		}
 
 		const collisionObject = this.getCollisionObject(move);
