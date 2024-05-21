@@ -1,4 +1,4 @@
-import type { Delta, Position } from "@/types/util";
+import type { Move, Position } from "@/types/util";
 import {
 	Tree,
 	WarpTile,
@@ -11,7 +11,7 @@ export interface FieldObject {
 }
 
 export interface FieldCharacter extends FieldObject {
-	move(delta?: Delta, position?: Position): void;
+	move(move?: Move, position?: Position): void;
 }
 
 export interface StaticObject extends FieldObject {

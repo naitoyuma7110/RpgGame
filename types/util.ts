@@ -3,7 +3,7 @@ export type Position = {
 	y: number;
 };
 
-export type Delta = {
+export type Move = {
 	x: number;
 	y: number;
 };

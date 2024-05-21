@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Field } from '@/classes/field/field';
 import { SwordMan, Thief } from '@/classes/field/character/fieldCharacter';
-import type { Delta } from '@/types/util';
+import type { Move } from '@/types/util';
 
 const field = reactive<Field>(new Field())
 
@@ -13,14 +13,18 @@ const enemyPosition = {
   x: 19,
   y: 19
 }
+const enemyPosition2 = {
+  x: 1,
+  y: 19
+}
 
 const player = reactive(field.createFieldCharacter(SwordMan, playerPosition))
 const enemy = field.createFieldCharacter(Thief, enemyPosition)
+const enemy2 = field.createFieldCharacter(Thief, enemyPosition2)
 
 
-const handlePlayerMove = (delta: Delta) => {
-  player.move(delta)
-  enemy.move(player.fieldPosition)
+const handlePlayerMove = (move: Move) => {
+  player.move(move)
   field.updateActiveField()
 }
 
@@ -52,8 +56,21 @@ const handleKeyPress = (event: KeyboardEvent) => {
       break;
   }
 }
+
+
 onMounted(() => {
   document.addEventListener("keydown", handleKeyPress);
+  if (process.client) {
+    setInterval(() => {
+      enemy.autoMove()
+      field.updateActiveField()
+    }, 400);
+    setInterval(() => {
+      enemy2.autoMove()
+      field.updateActiveField()
+    }, 900);
+  }
+  console.log("set onMounted")
 })
 
 </script>

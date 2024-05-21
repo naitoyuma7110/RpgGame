@@ -1,4 +1,4 @@
-import type { Delta, Position } from "@/types/util";
+import type { Move, Position } from "@/types/util";
 import type { FieldCharacter, StaticObject } from "@/classes/field/field";
 import swords from "@/assets/images/field/character/character_kishi_man_01_red_brown.svg";
 import thief from "@/assets/images/field/character/character_tozoku_black.svg";
@@ -7,8 +7,8 @@ import thief2 from "@/assets/images/field/character/character_tozoku_blue.svg";
 export abstract class AbsFieldCharacter implements FieldCharacter {
 	abstract fieldViewImagePath: string;
 
-	private fieldCharacters: FieldCharacter[];
-	private staticObjects: StaticObject[];
+	public fieldCharacters: FieldCharacter[];
+	public staticObjects: StaticObject[];
 
 	fieldPosition: Position;
 
@@ -21,8 +21,13 @@ export abstract class AbsFieldCharacter implements FieldCharacter {
 		this.staticObjects = staticObjects;
 		this.fieldPosition = position;
 	}
+	abstract move(move?: Move): void;
+	public abstract collisionEvent(
+		fieldCharacter: FieldCharacter,
+		move: Move
+	): void;
 
-	public getCollisionObject(move: Delta) {
+	private getCollisionObject(move: Move) {
 		const targetPosition = {
 			x: this.fieldPosition.x + move.x,
 			y: this.fieldPosition.y + move.y,
@@ -45,12 +50,26 @@ export abstract class AbsFieldCharacter implements FieldCharacter {
 			staticObject: staticObject,
 		};
 
-		console.log(`I am x:${this.fieldPosition.x} y:${this.fieldPosition.y}`);
-
 		return result;
 	}
 
-	abstract move(delta: Delta): void;
+	public overlapAndCollision(move: Move) {
+		const collisionObject = this.getCollisionObject(move);
+		if (collisionObject.fieldCharacter) {
+			// TODO:キャラクター同士の接触イベント
+			// キャラクター同士は重ならないため移動は行われない
+			this.collisionEvent(collisionObject.fieldCharacter, move);
+			return;
+		} else if (
+			collisionObject.staticObject &&
+			collisionObject.staticObject.isPassable
+		) {
+			this.fieldPosition.x += move.x;
+			this.fieldPosition.y += move.y;
+
+			collisionObject.staticObject.overlapEvent(this);
+		}
+	}
 }
 
 export class SwordMan extends AbsFieldCharacter {
@@ -64,21 +83,12 @@ export class SwordMan extends AbsFieldCharacter {
 		super(position, fieldCharacters, staticObjects);
 	}
 
-	move(delta: Delta) {
-		const collisionObject = this.getCollisionObject(delta);
-		if (collisionObject.fieldCharacter) {
-			// TODO:キャラクター同士の接触イベント
-			// キャラクター同士は重ならないため移動は行われない
-			return;
-		} else if (
-			collisionObject.staticObject &&
-			collisionObject.staticObject.isPassable
-		) {
-			this.fieldPosition.x += delta.x;
-			this.fieldPosition.y += delta.y;
+	move(move: Move) {
+		this.overlapAndCollision(move);
+	}
 
-			collisionObject.staticObject.overlapEvent(this);
-		}
+	public collisionEvent(fieldCharacter: FieldCharacter, move: Move) {
+		console.log("SwordManの衝突");
 	}
 }
 export class Thief extends AbsFieldCharacter {
@@ -92,12 +102,16 @@ export class Thief extends AbsFieldCharacter {
 		super(position, fieldCharacters, staticObjects);
 	}
 
-	move(targetPosition: Position) {
-		const random = Math.random();
-		if (random > 0.5) {
-			return;
-		}
+	move(move: Move) {
+		this.overlapAndCollision(move);
+	}
 
+	autoMove() {
+		const targetCharacter = this.fieldCharacters.find((character) => {
+			return character instanceof SwordMan;
+		});
+
+		const targetPosition = targetCharacter!.fieldPosition;
 		const currentPosition = {
 			x: this.fieldPosition.x,
 			y: this.fieldPosition.y,
@@ -113,16 +127,16 @@ export class Thief extends AbsFieldCharacter {
 			y: 0,
 		};
 
-		if (distance.x > distance.y) {
+		if (distance.x >= distance.y) {
 			move.x = targetPosition.x - currentPosition.x > 0 ? 1 : -1;
 		} else if (distance.x < distance.y) {
 			move.y = targetPosition.y - currentPosition.y > 0 ? 1 : -1;
 		}
 
-		const collisionObject = this.getCollisionObject(move);
-		if (!collisionObject.fieldCharacter) {
-			this.fieldPosition.x += move.x;
-			this.fieldPosition.y += move.y;
-		}
+		this.overlapAndCollision(move);
+	}
+	public collisionEvent(fieldCharacter: FieldCharacter, move: Move) {
+		fieldCharacter.move(move);
+		console.log("Thiefは相手を押す");
 	}
 }
