@@ -57,7 +57,6 @@ const handleKeyPress = (event: KeyboardEvent) => {
   }
 }
 
-
 onMounted(() => {
   document.addEventListener("keydown", handleKeyPress);
   if (process.client) {
@@ -72,7 +71,6 @@ onMounted(() => {
   }
   console.log("set onMounted")
 })
-
 </script>
 
 <template>
