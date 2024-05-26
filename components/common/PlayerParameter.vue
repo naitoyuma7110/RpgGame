@@ -7,6 +7,10 @@ const parameter = useParameterStore();
 
 <template>
   <div>
-    {{ parameter }}
+    <p>{{ parameter.level }}</p>
+    <p>{{ parameter.name }}</p>
+    <p>{{ parameter.HP }}/{{ parameter.maxHP }}</p>
+    <p>{{ parameter.power }}</p>
+
   </div>
 </template>

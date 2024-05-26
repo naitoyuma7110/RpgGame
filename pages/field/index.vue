@@ -2,6 +2,7 @@
 import { Field } from '@/classes/field/field';
 import { SwordMan, Thief } from '@/classes/field/character/fieldCharacter';
 import type { Move } from '@/types/util';
+import PlayerParameter from '~/components/common/PlayerParameter.vue';
 
 const field = reactive<Field>(new Field())
 
@@ -74,7 +75,7 @@ onMounted(() => {
 </script>
 
 <template>
-
+  <PlayerParameter />
   <div class="d-flex pa-10">
     <div class="me-10">
       <div class="field player-field">
