@@ -13,7 +13,7 @@ export class PlayerParameter implements Parameter {
 	image = swords;
 	level = 1;
 	name = "剣士";
-	HP = 10;
+	HP = 8;
 	maxHP = 10;
 	defense = 2;
 	power = 5;
