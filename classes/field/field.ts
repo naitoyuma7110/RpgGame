@@ -19,12 +19,11 @@ export interface StaticObject extends FieldObject {
 	overlapEvent(fieldCharacter: FieldCharacter): void;
 }
 
-const fieldRow = 20;
-const filedCol = 20;
-
 export class Field {
 	private fieldCharacters: FieldCharacter[];
 	private staticObjects: StaticObject[];
+	private fieldRow = 20;
+	private filedCol = 20;
 
 	staticField: StaticObject[][];
 	activeField: FieldCharacter[][];
@@ -35,17 +34,17 @@ export class Field {
 		this.staticField = [];
 		this.activeField = [];
 
-		for (let i = 0; i <= fieldRow; i++) {
-			this.staticField.push(new Array(filedCol));
-			this.activeField.push(new Array(filedCol).fill(null));
+		for (let i = 0; i <= this.fieldRow; i++) {
+			this.staticField.push(new Array(this.filedCol));
+			this.activeField.push(new Array(this.filedCol).fill(null));
 
-			for (let j = 0; j <= filedCol; j++) {
+			for (let j = 0; j <= this.filedCol; j++) {
 				const position = {
 					x: j,
 					y: i,
 				};
 				let object;
-				if (i == 0 || i == filedCol || j == 0 || j == fieldRow) {
+				if (i == 0 || i == this.filedCol || j == 0 || j == this.fieldRow) {
 					object = new Tree(position);
 				} else if (i == 10 && j == 10) {
 					object = new WarpTile(position);
@@ -66,8 +65,8 @@ export class Field {
 
 	updateActiveField() {
 		const newActiveField: FieldCharacter[][] = [];
-		for (let i = 0; i <= fieldRow; i++) {
-			newActiveField.push(new Array(filedCol));
+		for (let i = 0; i <= this.fieldRow; i++) {
+			newActiveField.push(new Array(this.filedCol));
 		}
 
 		this.fieldCharacters.forEach((fieldCharacter) => {
