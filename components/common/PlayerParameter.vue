@@ -18,28 +18,28 @@ const parameter = useParameterStore();
           <p class="text-subtitle-2">LV: {{ parameter.level }}</p>
         </div>
         <div class="flex-grow-1 mb-2 d-flex flex-column justify-end">
-          <p class="text-subtitle-1 text-end">{{ `${parameter.HP}/ ${parameter.maxHP}` }}</p>
-          <v-progress-linear :max="parameter.HP" :min="parameter.maxHP" :model-value="parameter.HP" rounded color="red"
+          <p class="text-subtitle-1 text-end">{{ `${parameter.HP} / ${parameter.maxHP}` }}</p>
+          <v-progress-linear striped :model-value="parameter.HP / parameter.maxHP * 100" rounded color="red"
             height="10" />
         </div>
       </div>
       <v-card-text>
         <div class="d-flex parameters">
           <p>
-            <v-icon color="grey">mdi-heart</v-icon>
-            <span>
+            <v-icon color="red">mdi-heart</v-icon>
+            <span class="text-red">
               {{ parameter.HP }}
             </span>
           </p>
           <p>
-            <v-icon color="grey">mdi-sword</v-icon>
-            <span>
+            <v-icon color="blue">mdi-sword</v-icon>
+            <span class="text-blue">
               {{ parameter.power }}
             </span>
           </p>
           <p>
-            <v-icon color="grey">mdi-security</v-icon>
-            <span>
+            <v-icon color="green">mdi-security</v-icon>
+            <span class="text-green">
               {{ parameter.defense }}
             </span>
           </p>

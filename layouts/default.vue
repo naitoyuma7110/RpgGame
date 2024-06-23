@@ -4,7 +4,7 @@
 
 <template>
   <div>
-    default layout
+    Field
     <slot />
   </div>
 </template>
