@@ -70,7 +70,6 @@ onMounted(() => {
       field.updateActiveField()
     }, 900);
   }
-  console.log("set onMounted")
 })
 </script>
 
@@ -97,32 +96,32 @@ onMounted(() => {
       <div class="mt-auto py-5">
         <div class="d-flex">
           <div class="d-flex align-center justify-center">
-            <v-btn icon="mdi-arrow-left-bold-outline" v-on:click="handlePlayerMove({
+            <v-btn icon="mdi-arrow-left-bold-outline" @click="handlePlayerMove({
               x: -1,
               y: 0
             })"></v-btn>
             <div class="d-flex flex-column">
-              <v-btn class="mb-2" icon="mdi-arrow-up-bold-outline" v-on:click="handlePlayerMove({
+              <v-btn class="mb-2" icon="mdi-arrow-up-bold-outline" @click="handlePlayerMove({
                 x: 0,
                 y: -1
               })"></v-btn>
-              <v-btn class="mt-2" icon="mdi-arrow-down-bold-outline" v-on:click="handlePlayerMove({
+              <v-btn class="mt-2" icon="mdi-arrow-down-bold-outline" @click="handlePlayerMove({
                 x: 0,
                 y: 1
               })"></v-btn>
             </div>
-            <v-btn icon="mdi-arrow-right-bold-outline" v-on:click="handlePlayerMove({
+            <v-btn icon="mdi-arrow-right-bold-outline" @click="handlePlayerMove({
               x: 1,
               y: 0
             })"></v-btn>
           </div>
           <div class="d-flex flex-column align-center mt-5 ms-5">
             <div>
-              <v-btn class="mb-2" icon="mdi-rotate-right" v-on:click="console.log('HELLO')"></v-btn>
+              <v-btn class="mb-2" icon="mdi-rotate-right" @click="console.log('HELLO')"></v-btn>
             </div>
             <div>
-              <v-btn class="mx-2" icon="mdi-check-circle-outline" v-on:click="console.log('HELLO')"></v-btn>
-              <v-btn class="mx-2" icon="mdi-food-takeout-box-outline" v-on:click="console.log('HELLO')"></v-btn>
+              <v-btn class="mx-2" icon="mdi-check-circle-outline" @click="console.log('HELLO')"></v-btn>
+              <v-btn class="mx-2" icon="mdi-food-takeout-box-outline" @click="console.log('HELLO')"></v-btn>
             </div>
           </div>
         </div>

@@ -1,10 +1,14 @@
 <script setup lang="ts">
-const layout = 'default'
+const router = useRouter()
+const route = useRoute()
 
+if (route.path === '/') {
+  router.push('/field')
+}
 </script>
 
 <template>
-  <NuxtLayout :name="layout">
+  <NuxtLayout :name="'default'">
     <NuxtPage />
   </NuxtLayout>
 </template>
